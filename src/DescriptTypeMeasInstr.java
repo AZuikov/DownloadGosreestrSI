@@ -153,9 +153,14 @@ public  class DescriptTypeMeasInstr {
         for (DescriptTypeMeasInstr dev : MyDevList)
         {
             //System.out.println(dev);
+            // качаем файл описания типа
             new siteDownload().LoadFile("https://all-pribors.ru/docs/",dev.getNumberSI()+".pdf",
                     "/home/local-guest/Documents/GRSI/");
-            Thread.sleep(500);
+            Thread.sleep(10);
+            // качаем файл методики поверки
+            new siteDownload().LoadFile("https://all-pribors.ru/docs/","mp-"+dev.getNumberSI()+".pdf",
+                    "/home/local-guest/Documents/GRSI/");
+            Thread.sleep(10);
 
         }
     }
