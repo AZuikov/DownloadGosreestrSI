@@ -1,29 +1,27 @@
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class siteDownload {
 
-    public static void main(String[] args) throws IOException {
+    public  boolean LoadFile(String DomainAdress, String FileName, String path) throws IOException {
 
         //имя конкретного файла
-        String FileName = "54849-1311.pdf";
+        //String FileName = "54849-13.pdf";
 
         //адрес в сети
-        String DomainAdres = "https://all-pribors.ru/docs/";
+        //String DomainAdress = "https://all-pribors.ru/docs/";
 
         //поток для чтения
         InputStream inURL = null;
 
         // куда все сохраняем
-        String path = "/home/local-guest/Documents/GRSI/";
+        //String path = "/home/local-guest/Documents/GRSI/";
 
-        System.out.println("Нчало скачивания файла: "+FileName);
+        System.out.println("Начало скачивания файла: "+FileName);
         try {
-            inURL = new URL(DomainAdres + FileName).openStream();
+            inURL = new URL(DomainAdress + FileName).openStream();
             ArrayList<Byte> byteArrayList = ReadFullyByByte(inURL); //  в массиве лежат байты
 
             // сохраним байты в файл
@@ -31,14 +29,19 @@ public class siteDownload {
 
 
             SaveByteArrToFile(path + FileName, byteArrayList);
+            inURL.close();
+
+            System.out.println("\t\t==>> Done\n");
+            return  true;
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("Файл с именем "+ FileName +" отсутствует по адресу " + DomainAdres);
+            System.out.println("Файл с именем "+ FileName +" отсутствует по адресу " + DomainAdress);
             //можно тут отсеивать описания типа, на которые нет файлов
-            // и методики поверки
+            // и методик поверки
+            return false;
         }
-        System.out.println("==========Done===========");
+
 
 
     }
@@ -53,13 +56,13 @@ public class siteDownload {
             if (oneByte != -1)
             {
                 counter++;
-                System.out.print("Скачано "+ counter +" байт\r");
+                //System.out.print("Скачано "+ counter +" байт\r");
                 ReturnByteArr.add((byte)oneByte);
 
             }
             else
             {
-                System.out.println();
+
                 break;
             }
         }

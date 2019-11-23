@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 /*
 Это класс Госреестра СИ - описывает описание типа
 на отдельно взятый номер госреестра
+https://fgis.gost.ru/fundmetrology/files/tsi.xml
 */
 public  class DescriptTypeMeasInstr {
     private String NameSI; //наименование типа СИ
@@ -132,9 +133,10 @@ public  class DescriptTypeMeasInstr {
 
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-        String FileName = "E:\\test_txt\\tsi_format.xml";
+        String FileName = "/home/local-guest/Documents/GRSI/tsi_format.xml";
+        //String FileName = "E:\\test_txt\\tsi_format.xml";
         FileReader fileReader = new FileReader(FileName);
         BufferedReader readerBufferedReader = new BufferedReader(fileReader);
         //String InStr ="<Obj><NameSI>Измерители коэффициента шума</NameSI><NumberSI>10010-85</NumberSI><StatusSI>Действует</StatusSI><FactoryNumSI>*)</FactoryNumSI><ManufacturerTotalSI>ПО \"Радиоприбор\", г.Великие Луки</ManufacturerTotalSI></Obj>";
@@ -150,7 +152,11 @@ public  class DescriptTypeMeasInstr {
 
         for (DescriptTypeMeasInstr dev : MyDevList)
         {
-            System.out.println(dev);
+            //System.out.println(dev);
+            new siteDownload().LoadFile("https://all-pribors.ru/docs/",dev.getNumberSI()+".pdf",
+                    "/home/local-guest/Documents/GRSI/");
+            Thread.sleep(500);
+
         }
     }
 }
