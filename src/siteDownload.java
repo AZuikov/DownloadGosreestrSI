@@ -22,7 +22,7 @@ public class siteDownload {
         System.out.println("Начало скачивания файла: "+FileName);
         try {
             inURL = new URL(DomainAdress + FileName).openStream();
-            ArrayList<Byte> byteArrayList = ReadFullyByByte(inURL); //  в массиве лежат байты
+            ArrayList<Byte> byteArrayList = ReadFullyByByte(inURL, false); //  в массиве лежат байты
 
             // сохраним байты в файл
 
@@ -46,7 +46,41 @@ public class siteDownload {
 
     }
 
-    public static  ArrayList<Byte> ReadFullyByByte(InputStream is) throws IOException
+
+    public  boolean LoadOneFile(String DomainAdress,  String path) throws IOException {
+
+               //поток для чтения
+        InputStream inURL = null;
+
+
+        System.out.println("Начало скачивания файла: "+DomainAdress);
+        try {
+            inURL = new URL(DomainAdress ).openStream();
+            ArrayList<Byte> byteArrayList = ReadFullyByByte(inURL, true); //  в массиве лежат байты
+
+            // сохраним байты в файл
+
+
+
+            SaveByteArrToFile(path + "tsi.xml", byteArrayList);
+            inURL.close();
+
+            System.out.println("\t\t==>> Done\n");
+            return  true;
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Файл с именем "+ "tsi.xml" +" отсутствует по адресу " + DomainAdress);
+            //можно тут отсеивать описания типа, на которые нет файлов
+            // и методик поверки
+            return false;
+        }
+
+
+
+    }
+
+    public static  ArrayList<Byte> ReadFullyByByte(InputStream is, boolean ShowByteCount) throws IOException
     {
         ArrayList<Byte> ReturnByteArr = new ArrayList<>();
         int counter=0;
@@ -56,7 +90,9 @@ public class siteDownload {
             if (oneByte != -1)
             {
                 counter++;
-                //System.out.print("Скачано "+ counter +" байт\r");
+                // покажем сколько скачано, если вызвали с  true
+                 if (ShowByteCount) System.out.print("Скачано "+ counter +" байт\r");
+
                 ReturnByteArr.add((byte)oneByte);
 
             }

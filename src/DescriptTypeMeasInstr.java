@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -134,7 +132,40 @@ public  class DescriptTypeMeasInstr {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
+// добавить внешние параметры через args
+        // имя каталога, откуда качать, расположение справочника
 
+        // new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml","/home/local-guest/Documents/GRSI/");
+
+// сделана подготовка файла, не вставлен символ переноса строки после тега </obj>
+
+        FileReader fileTsiXml = new FileReader("/home/local-guest/Documents/GRSI/tsi.xml");
+        BufferedReader reader = new BufferedReader(fileTsiXml);
+        String FileContent = null;
+        while (reader.ready())
+        {
+            FileContent = FileContent+reader.readLine();
+        }
+        reader.close();
+
+        final String regex = "<\\/Obj>";
+        final String subst = "<\\/Obj>\n";
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(FileContent);
+
+        final String resultContent = matcher.replaceAll(subst);
+
+        FileWriter fileWriter = new FileWriter("/home/local-guest/Documents/GRSI/tsi_format.xml");
+        BufferedWriter FileBufWriter = new BufferedWriter(fileWriter);
+
+        FileBufWriter.write(resultContent);
+        FileBufWriter.close();
+
+        System.out.println("Файл справочника загружен как tsi.xml\nДополнительно преобразован в файл tsi_format.xml");
+
+
+////////////////////////////////////////////////////////////////////////////////////
         String FileName = "/home/local-guest/Documents/GRSI/tsi_format.xml";
         //String FileName = "E:\\test_txt\\tsi_format.xml";
         FileReader fileReader = new FileReader(FileName);
