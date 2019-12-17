@@ -134,12 +134,13 @@ public  class DescriptTypeMeasInstr {
     public static void main(String[] args) throws IOException, InterruptedException {
 // добавить внешние параметры через args
         // имя каталога, откуда качать, расположение справочника
-
-        // new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml","/home/local-guest/Documents/GRSI/");
+        String MyPath = "C:/Users/ZuikovAA/Documents/GRSI/";
+        //String MyPath = args[0];
+        // new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml",MyPath);
 
 // сделана подготовка файла, не вставлен символ переноса строки после тега </obj>
 
-        FileReader fileTsiXml = new FileReader("/home/local-guest/Documents/GRSI/tsi.xml");
+        FileReader fileTsiXml = new FileReader(MyPath+"tsi.xml");
         BufferedReader reader = new BufferedReader(fileTsiXml);
         String FileContent = null;
         while (reader.ready())
@@ -156,7 +157,8 @@ public  class DescriptTypeMeasInstr {
 
         final String resultContent = matcher.replaceAll(subst);
 
-        FileWriter fileWriter = new FileWriter("/home/local-guest/Documents/GRSI/tsi_format.xml");
+        String FileName = MyPath+"tsi_format.xml";
+        FileWriter fileWriter = new FileWriter(FileName);
         BufferedWriter FileBufWriter = new BufferedWriter(fileWriter);
 
         FileBufWriter.write(resultContent);
@@ -166,7 +168,8 @@ public  class DescriptTypeMeasInstr {
 
 
 ////////////////////////////////////////////////////////////////////////////////////
-        String FileName = "/home/local-guest/Documents/GRSI/tsi_format.xml";
+
+
         //String FileName = "E:\\test_txt\\tsi_format.xml";
         FileReader fileReader = new FileReader(FileName);
         BufferedReader readerBufferedReader = new BufferedReader(fileReader);
@@ -181,18 +184,47 @@ public  class DescriptTypeMeasInstr {
 
         }
 
-        for (DescriptTypeMeasInstr dev : MyDevList)
+        /*for (DescriptTypeMeasInstr dev : MyDevList)
         {
             //System.out.println(dev);
             // качаем файл описания типа
-            new siteDownload().LoadFile("https://all-pribors.ru/docs/",dev.getNumberSI()+".pdf",
+            new siteDownload().LoadFile("https://all-pribors.ru/docs/",
+                    dev.getNumberSI()+".pdf",
                     "/home/local-guest/Documents/GRSI/");
-            Thread.sleep(10);
+            Thread.sleep(5);
             // качаем файл методики поверки
-            new siteDownload().LoadFile("https://all-pribors.ru/docs/","mp-"+dev.getNumberSI()+".pdf",
+            new siteDownload().LoadFile("https://all-pribors.ru/docs/",
+                    "mp-"+dev.getNumberSI()+".pdf",
                     "/home/local-guest/Documents/GRSI/");
+            Thread.sleep(5);
+
+        }*/
+        int Ot =0, Mp = 0;
+
+        for (int i = MyDevList.size()-1; i >=0; i--)
+        {
+            String Number = MyDevList.get(i).getNumberSI();
+
+            System.out.println("Всего скачано описаний типа " + Ot + " и методик " + Mp + "; пытаемся качать номер "+ Number);
+            // качаем файл описания типа
+            boolean answer = new siteDownload().LoadFile("https://all-pribors.ru/docs/",
+                    Number +".pdf",
+                    MyPath);
             Thread.sleep(10);
+            if (answer) {
+                // качаем файл методики поверки если файл описания типа есть
+                Ot++;
+                answer = new siteDownload().LoadFile("https://all-pribors.ru/docs/",
+                        "mp-" + Number + ".pdf",
+                        MyPath);
+                Thread.sleep(10);
+                if (answer)Mp++;
+
+
+            }
 
         }
+
+        System.out.println("\n\nЗагрузка закончена!!!");
     }
 }

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.ConnectException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class siteDownload {
         // куда все сохраняем
         //String path = "/home/local-guest/Documents/GRSI/";
 
-        System.out.println("Начало скачивания файла: "+FileName);
+        //System.out.println("Начало скачивания файла: "+FileName);
         try {
             inURL = new URL(DomainAdress + FileName).openStream();
             ArrayList<Byte> byteArrayList = ReadFullyByByte(inURL, false); //  в массиве лежат байты
@@ -31,14 +32,18 @@ public class siteDownload {
             SaveByteArrToFile(path + FileName, byteArrayList);
             inURL.close();
 
-            System.out.println("\t\t==>> Done\n");
+           // System.out.println("\t\t==>> Done\n");
             return  true;
         }
         catch (FileNotFoundException e)
         {
-            System.out.println("Файл с именем "+ FileName +" отсутствует по адресу " + DomainAdress);
+            //System.out.println("Файл с именем "+ FileName +" отсутствует по адресу " + DomainAdress);
             //можно тут отсеивать описания типа, на которые нет файлов
             // и методик поверки
+            return false;
+        }
+        catch (ConnectException e)
+        {
             return false;
         }
 
