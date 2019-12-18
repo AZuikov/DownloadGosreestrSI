@@ -133,10 +133,12 @@ public  class DescriptTypeMeasInstr {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 // добавить внешние параметры через args
-        // имя каталога, откуда качать, расположение справочника
+        //директория для загрузки файлов сама не создается, пока...
+
+        // имя каталога, куда качать, расположение справочника
         String MyPath = "C:/Users/dv_laptop/Documents/GRSI/";
         //String MyPath = args[0];
-         new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml",MyPath);
+         //new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml",MyPath);
 
 // сделана подготовка файла, не вставлен символ переноса строки после тега </obj>
 
@@ -205,7 +207,7 @@ public  class DescriptTypeMeasInstr {
         {
             String Number = MyDevList.get(i).getNumberSI();
 
-            System.out.println("Всего скачано описаний типа " + Ot + " и методик " + Mp + "; пытаемся качать номер "+ Number);
+            System.out.print("\rВсего скачано описаний типа " + Ot + " и методик " + Mp + "; пытаемся качать номер "+ Number);
             // качаем файл описания типа
             boolean answer = new siteDownload().LoadFile("https://all-pribors.ru/docs/",
                     Number +".pdf",
