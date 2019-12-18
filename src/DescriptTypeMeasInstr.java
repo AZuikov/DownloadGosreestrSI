@@ -134,9 +134,9 @@ public  class DescriptTypeMeasInstr {
     public static void main(String[] args) throws IOException, InterruptedException {
 // добавить внешние параметры через args
         // имя каталога, откуда качать, расположение справочника
-        String MyPath = "C:/Users/ZuikovAA/Documents/GRSI/";
+        String MyPath = "C:/Users/dv_laptop/Documents/GRSI/";
         //String MyPath = args[0];
-        // new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml",MyPath);
+         new siteDownload().LoadOneFile("https://fgis.gost.ru/fundmetrology/files/tsi.xml",MyPath);
 
 // сделана подготовка файла, не вставлен символ переноса строки после тега </obj>
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class siteDownload {
 
+
     public  boolean LoadFile(String DomainAdress, String FileName, String path) throws IOException {
 
         //имя конкретного файла
@@ -107,6 +108,7 @@ public class siteDownload {
                 break;
             }
         }
+        is.close();
 
         return ReturnByteArr;
     }
@@ -118,6 +120,7 @@ public class siteDownload {
             for (Object MyByte : InByteArr.toArray()) {
                 os.write((byte) MyByte);
             }
+            os.close();
         }
         catch (FileNotFoundException e)
         {
